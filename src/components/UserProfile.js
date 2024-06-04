@@ -5,10 +5,6 @@ import styled from 'styled-components';
 const ProfileContainer = styled.div`
   flex: 1;
   padding: 20px;
-  
-  @media (max-width: 600px) {
-    padding: 10px;
-  }
 `;
 
 const Heading = styled.h1`
@@ -24,12 +20,18 @@ const Row = styled.div`
   display: flex;
   justify-content: space-between;
   margin-bottom: 15px;
+  @media screen and (max-width: 768px) {
+    flex-direction: column; /* Stack columns vertically on smaller screens */
+  }
 `;
 
 const Column = styled.div`
   display: flex;
   flex-direction: column;
   width: 48%;
+  @media screen and (max-width: 768px) {
+    width: 100%; /* Make columns full width on smaller screens */
+  }
 `;
 
 const Label = styled.label`
@@ -40,6 +42,7 @@ const Input = styled.input`
   padding: 8px;
   border: 1px solid #ccc;
   border-radius: 4px;
+  width: 100%; /* Full width input */
 `;
 
 const TextArea = styled.textarea`
@@ -47,6 +50,7 @@ const TextArea = styled.textarea`
   border: 1px solid #ccc;
   border-radius: 4px;
   resize: none;
+  width: 100%; /* Full width textarea */
 `;
 
 const ErrorMessage = styled.span`
@@ -123,8 +127,15 @@ const UserProfile = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (validate()) {
-      localStorage.setItem('userProfileData', JSON.stringify(formData));
-      setSuccessMessage('Your changes have been saved successfully!');
+      const storedData = localStorage.getItem('userProfileData');
+      const storedFormData = JSON.parse(storedData);
+      
+      if (JSON.stringify(formData) !== JSON.stringify(storedFormData)) {
+        localStorage.setItem('userProfileData', JSON.stringify(formData));
+        setSuccessMessage('Your changes have been saved successfully!');
+      } else {
+        setSuccessMessage('No changes to save.');
+      }
     }
   };
 
