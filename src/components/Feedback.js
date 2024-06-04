@@ -59,15 +59,24 @@ const Feedback = () => {
   //validation for all required fields
   const validate = () => {
     let tempErrors = {};
+    const nameRegex = /^[A-Za-z\s]+$/; // Regular expression to allow only letters and spaces
+  
     tempErrors.name = name ? "" : "Name is required.";
+    if (name && !nameRegex.test(name)) {
+      tempErrors.name = "Only letters are allowed.";
+    }
+  
     tempErrors.email = email ? "" : "Email is required.";
     if (email && !validateEmail(email)) {
       tempErrors.email = "Email is not valid.";
     }
+  
     tempErrors.message = message ? "" : "Message is required.";
+  
     setErrors(tempErrors);
     return Object.values(tempErrors).every(x => x === "");
   };
+  
 
   const handleSubmit = (e) => {
     e.preventDefault();

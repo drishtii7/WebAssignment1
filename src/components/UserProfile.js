@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 
-//styling the Profile Container
+// Styling the Profile Container
 const ProfileContainer = styled.div`
   flex: 1;
   padding: 20px;
@@ -80,7 +80,7 @@ const Button = styled.button`
   color: white;
 `;
 
-//using static values to display in form data
+// Using static values to display in form data
 const UserProfile = () => {
   const [formData, setFormData] = useState({
     firstName: 'Olivia',
@@ -107,29 +107,62 @@ const UserProfile = () => {
       ...formData,
       [name]: value,
     });
-    setSuccessMessage(''); 
+    setSuccessMessage('');
   };
 
   const validate = () => {
     const newErrors = {};
-    //handling validations for input fields
-    if (!formData.firstName) newErrors.firstName = 'First Name is required';
-    if (!formData.lastName) newErrors.lastName = 'Last Name is required';
-    if (!formData.email) newErrors.email = 'Email is required';
-    if (!formData.phone) newErrors.phone = 'Phone number is required';
-    else if (!/^\d{3}-\d{3}-\d{4}$/.test(formData.phone)) newErrors.phone = 'Phone number should be in format xxx-xxx-xxxx';
-    if (!formData.designation) newErrors.designation = 'Designation is required';
-    if (!formData.bio) newErrors.bio = 'Bio is required';
+  
+    // Regular expression to allow characters and spaces
+    const charactersAndSpacesRegex = /^[A-Za-z\s]+$/;
+  
+    if (!formData.firstName) {
+      newErrors.firstName = 'First Name is required';
+    } else if (!charactersAndSpacesRegex.test(formData.firstName)) {
+      newErrors.firstName = 'Invalid FirstName. Only letters are allowed';
+    }
+  
+    if (!formData.lastName) {
+      newErrors.lastName = 'Last Name is required';
+    } else if (!charactersAndSpacesRegex.test(formData.lastName)) {
+      newErrors.lastName = 'Invalid LastName. Only letters are allowed';
+    }
+  
+    if (!formData.email) {
+      newErrors.email = 'Email is required';
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+      newErrors.email = 'Invalid email format';
+    }
+  
+    if (!formData.designation) {
+      newErrors.designation = 'Designation is required';
+    } else if (!charactersAndSpacesRegex.test(formData.designation)) {
+      newErrors.designation = 'Invalid Designation. Only letters are allowed';
+    }
+  
+    if (!formData.bio) {
+      newErrors.bio = 'Bio is required';
+    }
+    
+    // Phone validation
+    const phoneRegex = /^\d{3}-\d{3}-\d{4}$/;
+    if (!formData.phone) {
+      newErrors.phone = 'Phone number is required';
+    } else if (!phoneRegex.test(formData.phone)) {
+      newErrors.phone = 'Invalid phone number or format (xxx-xxx-xxxx)';
+    }
+  
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
+  
 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (validate()) {
       const storedData = localStorage.getItem('userProfileData');
       const storedFormData = JSON.parse(storedData);
-      
+
       if (JSON.stringify(formData) !== JSON.stringify(storedFormData)) {
         localStorage.setItem('userProfileData', JSON.stringify(formData));
         setSuccessMessage('Your changes have been saved successfully!');
@@ -150,7 +183,7 @@ const UserProfile = () => {
       bio: 'Hello, I am a compassionate therapist who believes in empowering clients to overcome challenges and improve their mental well-being.',
     });
     setErrors({});
-    setSuccessMessage('');  
+    setSuccessMessage('');
   };
 
   return (

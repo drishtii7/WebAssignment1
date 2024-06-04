@@ -9,9 +9,9 @@ import Typography from '@mui/material/Typography';
 const FormContainer = styled(Container)({
   backgroundColor: '#f5f5f5', // Light gray color
   color: '#2c3e50',
-  padding: '20px',
+  padding: '10px',
   borderRadius: '10px',
-  maxWidth: '600px', /* Adjusted width for responsiveness */
+  maxWidth: '400px', /* Adjusted width for responsiveness */
   margin: '20px auto',
   '@media (max-width: 600px)': {
     padding: '10px',
@@ -103,7 +103,7 @@ const ProfessionalDetailsForm = () => {
 
   return (
     <FormContainer>
-      <FormTitle variant="h3">Professional Details</FormTitle>
+      <FormTitle variant="h4">Professional Details</FormTitle>
       {isSubmitted ? (
         <SuccessMessage>Your information is saved successfully.</SuccessMessage>
       ) : (
@@ -115,7 +115,7 @@ const ProfessionalDetailsForm = () => {
               value={formData.qualifications}
               onChange={handleChange}
               multiline
-              rows={5}
+              rows={3}
               fullWidth
               variant="outlined"
             />
@@ -164,7 +164,7 @@ const ProfessionalDetailsForm = () => {
               value={formData.memberships}
               onChange={handleChange}
               multiline
-              rows={5}
+              rows={4}
               fullWidth
               variant="outlined"
             />
